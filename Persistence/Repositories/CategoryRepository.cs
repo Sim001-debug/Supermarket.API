@@ -1,14 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Supermarket.API.Data;
 using Supermarket.API.Domain.Repositories;
 using Supermarket.API.Models;
+using Supermarket.API.Resource;
 
 namespace Supermarket.API.Persistence.Repositories
 {
     public class CategoryRepository : BaseRepository, ICategoryRepository
     {
-        public CategoryRepository(AppDbContext context) : base(context)
+        private readonly ILogger<CategoryRepository> _logger; 
+
+        public CategoryRepository(AppDbContext context, ILogger<CategoryRepository> logger) : base(context)
         {
+            _logger = logger;
         }
 
         public async Task<IEnumerable<Category>> ListAsync()
@@ -25,17 +30,41 @@ namespace Supermarket.API.Persistence.Repositories
 
         public async Task<Category> UpdateAsync(int categoryId, Category updateCategory)
         {
-            var existingCategory = await _context.Categories.FindAsync(categoryId);
+            try
+            {
+                var existingCategory = await _context.Categories.FindAsync(categoryId);
 
-            if (existingCategory == null)
+                if (existingCategory == null)
+                {
+                    _logger.LogWarning($"Category with ID {categoryId} not found for update.");
+                    return null;
+                }
+
+                existingCategory.Name = updateCategory.Name;
+
+                _context.Categories.Update(existingCategory);
+                await _context.SaveChangesAsync();
+
+                return existingCategory;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while updating the category with ID {categoryId}", categoryId);
                 return null;
+            }
+            
+        }
 
-            existingCategory.Name = updateCategory.Name;
+        public Task<Category> FindByIdAsync(int id)
+        {
+            return _context.Categories
+                .Include(c => c.Products)
+                .FirstOrDefaultAsync(c => c.Id == id);
+        }
 
-            _context.Categories.Update(existingCategory);
-            await _context.SaveChangesAsync();
-
-            return existingCategory;
+        public void Update(CategoryResource categoryResource)
+        {
+            return; // This method is not implemented in the repository, it should be handled in the service layer.
         }
     }
 }
