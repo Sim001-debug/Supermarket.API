@@ -87,6 +87,28 @@ namespace Supermarket.API.Controllers
             var categoryResource = _mapper.Map<Category, CategoryResource>(result);
             return Ok(categoryResource);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            var deleteCategory = await _categoryService.DeleteCategoryAsync(id);
+            if (deleteCategory == null)
+            {
+                _logger.LogWarning($"The category with {id} does not exist");
+                return StatusCode(StatusCodes.Status404NotFound, $"Category {id} was not found");
+            }
+
+            var categoryResource = _mapper.Map<Category, CategoryResource>(deleteCategory);
+            
+            _logger.LogInformation($"Category with ID {id} deleted successfully");
+            return Ok(new
+            {
+                isSuccess = true,
+                message = "Category deleted successfully",
+                data = categoryResource
+            });
+
+        }
     }
 }
 

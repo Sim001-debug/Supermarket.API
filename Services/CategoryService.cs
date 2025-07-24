@@ -1,5 +1,6 @@
 ﻿using Supermarket.API.Domain.Repositories;
 using Supermarket.API.Models;
+using Supermarket.API.Resource;
 
 namespace Supermarket.API.Services
 {
@@ -27,6 +28,16 @@ namespace Supermarket.API.Services
         public Task<Category> UpdateCategoryService(int categoryId, Category updateCategory)
         {
             return _categoryRepository.UpdateAsync(categoryId, updateCategory);
+        }
+
+        public Task<Category> FindByIdAsync(int id)
+        {
+            return _categoryRepository.FindByIdAsync(id);
+        }
+
+        public void Update(CategoryResource categoryResource)
+        {
+            _categoryRepository.Update(categoryResource);
         }
     }
 }
