@@ -62,11 +62,6 @@ namespace Supermarket.API.Persistence.Repositories
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        //public void Update(CategoryResource categoryResource)
-        //{
-        //    return; // This method is not implemented in the repository, it should be handled in the service layer.
-        //}
-
         public async Task<Category> DeleteByIdAsync(int id)
         {
             var category = await _context.Categories

@@ -20,8 +20,6 @@ namespace Supermarket.API.Services
 
         public Task CreateCategoryAsync(Category category)
         {
-            // Implementation for creating a category
-            // Assuming the repository has a method to add a category
             return _categoryRepository.AddAsync(category);
         }
 
@@ -34,11 +32,6 @@ namespace Supermarket.API.Services
         {
             return _categoryRepository.FindByIdAsync(id);
         }
-
-        //public void Update(CategoryResource categoryResource)
-        //{
-        //    _categoryRepository.Update(categoryResource);
-        //}
 
         public Task<Category> DeleteCategoryAsync(int id)
         {

@@ -25,8 +25,6 @@ namespace Supermarket.API.Controllers
             _mapper = mapper;
         }
 
-        // Additional methods for handling category-related requests will go here
-
         [HttpGet]
         public async Task<IEnumerable<CategoryResource>> GetAllCategories()
         {
