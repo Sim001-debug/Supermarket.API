@@ -62,9 +62,36 @@ namespace Supermarket.API.Persistence.Repositories
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public void Update(CategoryResource categoryResource)
+        public async Task<Category> DeleteByIdAsync(int id)
         {
-            return; // This method is not implemented in the repository, it should be handled in the service layer.
+            var category = await _context.Categories
+                .Include(c => c.Products)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (category == null)
+            {
+                _logger.LogWarning($"Category with ID {id} not found for deletion.");
+                return null;
+            }
+
+            _context.Categories.Remove(category);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return category;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"An error occurred while deleting category with ID {id}");
+                return null;
+            }
         }
+
+        public void Remove(Category category)
+        {
+            _context.Categories.Remove(category);
+        }
+
     }
 }
