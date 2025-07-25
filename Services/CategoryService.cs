@@ -35,9 +35,14 @@ namespace Supermarket.API.Services
             return _categoryRepository.FindByIdAsync(id);
         }
 
-        public void Update(CategoryResource categoryResource)
+        //public void Update(CategoryResource categoryResource)
+        //{
+        //    _categoryRepository.Update(categoryResource);
+        //}
+
+        public Task<Category> DeleteCategoryAsync(int id)
         {
-            _categoryRepository.Update(categoryResource);
+            return _categoryRepository.DeleteByIdAsync(id);
         }
     }
 }

@@ -7,6 +7,5 @@ public interface ICategoryService
     Task<IEnumerable<Category>> GetAllCategoriesAsync();
     Task<Category> UpdateCategoryService(int categoryId, Category updateCategory);
     Task<Category> FindByIdAsync(int id);
-    void Update(CategoryResource categoryResource);
     Task<Category> DeleteCategoryAsync(int id);
 }
