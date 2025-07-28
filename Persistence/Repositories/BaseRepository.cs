@@ -1,4 +1,4 @@
-﻿using Supermarket.API.Data;
+﻿using Supermarket.API.Persistence.Contexts;
 
 namespace Supermarket.API.Persistence.Repositories
 {
