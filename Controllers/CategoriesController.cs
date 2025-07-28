@@ -35,7 +35,7 @@ namespace Supermarket.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCategory([FromBody] SaveCategoryResource saveCategory)
+        public async Task<IActionResult> CreateCategory([FromBody] CategoryResponse saveCategory)
         {
             if (!ModelState.IsValid)
             {
@@ -44,7 +44,7 @@ namespace Supermarket.API.Controllers
             }
 
             // map our new resource to our category model class using AutoMapper
-            var category = _mapper.Map<SaveCategoryResource, Category>(saveCategory);
+            var category = _mapper.Map<CategoryResponse, Category>(saveCategory);
             if (category == null)
             {
                 _logger.LogError("Category mapping failed");
@@ -64,7 +64,7 @@ namespace Supermarket.API.Controllers
         }
 
         [HttpPut("{categoryId}")]
-        public async Task<IActionResult> UpdateCategory(int categoryId, [FromBody] SaveCategoryResource saveCategoryResource)
+        public async Task<IActionResult> UpdateCategory(int categoryId, [FromBody] CategoryResponse saveCategoryResource)
         {
             if (!ModelState.IsValid)
             {
@@ -72,7 +72,7 @@ namespace Supermarket.API.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, ModelState);
             }
                                            // the incoming data, to => Category domain model
-            var updateCategory = _mapper.Map<SaveCategoryResource, Category>(saveCategoryResource);
+            var updateCategory = _mapper.Map<CategoryResponse, Category>(saveCategoryResource);
 
             var result = await _categoryService.UpdateCategoryService(categoryId, updateCategory);
 

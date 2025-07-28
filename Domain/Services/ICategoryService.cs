@@ -8,4 +8,5 @@ public interface ICategoryService
     Task<Category> UpdateCategoryService(int categoryId, Category updateCategory);
     Task<Category> FindByIdAsync(int id);
     Task<Category> DeleteCategoryAsync(int id);
+    //Task<CategoryResponse> GetCategoryByIdAsync(int id);
 }

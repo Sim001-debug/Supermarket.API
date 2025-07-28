@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Supermarket.API.Data;
+using Supermarket.API.Persistence.Contexts;
 using Supermarket.API.Domain.Repositories;
 using Supermarket.API.Models;
 using Supermarket.API.Resource;
@@ -18,21 +18,21 @@ namespace Supermarket.API.Persistence.Repositories
 
         public async Task<IEnumerable<Category>> ListAsync()
         {
-            return await _context.Categories
+            return await _context.Category
                 .Include(c => c.Products)
                 .ToListAsync();
         }
 
         public async Task AddAsync(Category category)
         {
-            await _context.Categories.AddAsync(category);
+            await _context.Category.AddAsync(category);
         }
 
         public async Task<Category> UpdateAsync(int categoryId, Category updateCategory)
         {
             try
             {
-                var existingCategory = await _context.Categories.FindAsync(categoryId);
+                var existingCategory = await _context.Category.FindAsync(categoryId);
 
                 if (existingCategory == null)
                 {
@@ -42,7 +42,7 @@ namespace Supermarket.API.Persistence.Repositories
 
                 existingCategory.Name = updateCategory.Name;
 
-                _context.Categories.Update(existingCategory);
+                _context.Category.Update(existingCategory);
                 await _context.SaveChangesAsync();
 
                 return existingCategory;
@@ -57,14 +57,14 @@ namespace Supermarket.API.Persistence.Repositories
 
         public Task<Category> FindByIdAsync(int id)
         {
-            return _context.Categories
+            return _context.Category
                 .Include(c => c.Products)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<Category> DeleteByIdAsync(int id)
         {
-            var category = await _context.Categories
+            var category = await _context.Category
                 .Include(c => c.Products)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
@@ -74,7 +74,7 @@ namespace Supermarket.API.Persistence.Repositories
                 return null;
             }
 
-            _context.Categories.Remove(category);
+            _context.Category.Remove(category);
 
             try
             {
@@ -90,7 +90,7 @@ namespace Supermarket.API.Persistence.Repositories
 
         public void Remove(Category category)
         {
-            _context.Categories.Remove(category);
+            _context.Category.Remove(category);
         }
 
     }

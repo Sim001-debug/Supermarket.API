@@ -2,7 +2,7 @@
 
 namespace Supermarket.API.Resource
 {
-    public class SaveCategoryResource
+    public class CategoryResponse
     {
         [Required]
         [MaxLength(30, ErrorMessage = "The maximum length for the name is 50 characters.")]
